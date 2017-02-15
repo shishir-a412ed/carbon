@@ -1,5 +1,7 @@
 // Write a function to connect all the adjacent nodes at the same level in a binary tree.
 // Method 1: Extend level order traversal or BFS. Time Complexity O(n) and Space Complexity O(n).
+// Method 2: Extend pre order traversal or DFS. This will only work with perfect binary trees.
+// Time Complexity O(n) and Space Complexity O(1).
 
 #include <iostream>
 #include <queue>
@@ -15,7 +17,8 @@ Node *next;
 
 Node* insert(Node *, int);
 Node* createNode(Node *, int);
-void connectNext(Node *);
+void connectNextBFS(Node *);
+void connectNextDFS(Node *);
 void printConnect(Node *);
 
 int main(){
@@ -30,7 +33,7 @@ while(ch == 'y' || ch == 'Y'){
      cout<<"Do you wish to enter another element [y/n]\n";
      cin>>ch;
 }
-connectNext(root);
+connectNextDFS(root);
 cout<<"Level order traversal (BFS) using printConnect:\n";
 printConnect(root);
 return 0;
@@ -51,7 +54,19 @@ while(root){
 }
 }
 
-void connectNext(Node *root){
+void connectNextDFS(Node *root){
+if (!root)
+   return;
+if (root->left){
+   root->left->next=root->right;
+   if (root->next)
+      root->right->next=root->next->left;
+   connectNextDFS(root->left);
+   connectNextDFS(root->right);
+}
+}
+
+void connectNextBFS(Node *root){
 if (!root)
    return;
 Node *prev=NULL;
