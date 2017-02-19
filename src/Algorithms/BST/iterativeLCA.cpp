@@ -1,7 +1,9 @@
 // Iterative Lowest Common Ancestor (LCA) in a Binary Search Tree.
+// Time Complexity O(h). Space Complexity O(h) where h is the height of the BST.
 
 #include <iostream>
 #include <stack>
+#include <cstdlib>
 
 using namespace std;
 
@@ -35,6 +37,11 @@ cin>>n1;
 cout<<"Enter n2\n";
 cin>>n2;
 Node *lca=findLCA(root, n1, n2);
+if (!lca)
+{
+cout<<"LCA not found: Either n1 or n2 or both do not exist in the BST\n";
+exit(1);
+}
 cout<<"LCA of n1 and n2 is: "<<lca->data<<endl;
 return 0;
 }
@@ -60,6 +67,8 @@ while(root && new_root){
      else if (n2 > root->data)
         root=root->right;
 }
+if (!root || !new_root)
+   return NULL;
 return s.top();
 }
 
