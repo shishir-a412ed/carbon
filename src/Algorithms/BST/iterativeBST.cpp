@@ -14,6 +14,7 @@ struct Node{
 Node* insert(Node*, int);
 Node* createNode(Node*, int);
 void iterativePreorder(Node*);
+void iterativeInorder(Node*);
 
 int main(){
 Node *root=NULL;
@@ -27,8 +28,31 @@ while(ch == 'y' || ch == 'Y'){
      cout<<"Do you wish to enter another element [y/n]\n";
      cin>>ch;
 }
-iterativePreorder(root);
+iterativeInorder(root);
 return 0;
+}
+
+void iterativeInorder(Node *root){
+if (!root)
+   return;
+stack<Node*> s;
+while(root){
+s.push(root);
+root=root->left;
+}
+while(!s.empty()){
+Node *top=s.top();
+s.pop();
+cout<<top->data<<" ";
+if (top->right){
+   top=top->right;
+    while(top){
+     s.push(top);
+     top=top->left;
+   }
+}
+}
+cout<<endl;
 }
 
 void iterativePreorder(Node *root){
