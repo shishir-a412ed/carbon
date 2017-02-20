@@ -1,5 +1,7 @@
 // Iterative Lowest Common Ancestor (LCA) in a Binary Search Tree.
-// Time Complexity O(h). Space Complexity O(h) where h is the height of the BST.
+// findLCA: Time Complexity: O(h). Space Complexity O(h) where h is the height of the BST.
+// findLCANew: Time Complexity: O(h). Space Complexity O(1).
+
 
 #include <iostream>
 #include <stack>
@@ -17,6 +19,8 @@ Node* insert(Node*, int);
 Node* createNode(Node*, int);
 void inorder(Node *);
 Node* findLCA(Node *,int, int);
+Node* findLCANew(Node *,int,int);
+bool isExists(Node *,int);
 
 int main(){
 Node *root=NULL;
@@ -36,7 +40,7 @@ cout<<"\nEnter n1\n";
 cin>>n1;
 cout<<"Enter n2\n";
 cin>>n2;
-Node *lca=findLCA(root, n1, n2);
+Node *lca=findLCANew(root, n1, n2);
 if (!lca)
 {
 cout<<"LCA not found: Either n1 or n2 or both do not exist in the BST\n";
@@ -44,6 +48,38 @@ exit(1);
 }
 cout<<"LCA of n1 and n2 is: "<<lca->data<<endl;
 return 0;
+}
+
+bool isExists(Node *root, int n){
+if (!root)
+   return false;
+if (n==root->data)
+    return true;
+else if (n<root->data)
+    return isExists(root->left, n);
+else
+   return isExists(root->right, n);
+}
+
+Node* findLCANew(Node *root, int n1, int n2){
+if (!root)
+   return root;
+
+bool isN1, isN2;
+isN1=isExists(root,n1);
+isN2=isExists(root,n2);
+if (!isN1 || !isN2)
+   return NULL;
+
+while(root){
+   if (n1 <root->data && n2<root->data)
+      root=root->left;
+   else if(n1 >root->data && n2>root->data)
+      root=root->right;
+   else
+      break;
+}
+return root;
 }
 
 Node* findLCA(Node *root, int n1, int n2){
