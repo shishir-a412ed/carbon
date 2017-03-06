@@ -1,7 +1,7 @@
 // Given a binary tree, print all root-to-leaf paths.
 
 #include <iostream>
-#include <vector>
+#include <stack>
 
 using namespace std;
 
@@ -52,35 +52,39 @@ if (root){
 }
 }
 
-void printV(vector<int> v){
-vector<int>::iterator it;
-for(it=v.begin();it!=v.end();it++)
-   cout<<*it<<" ";
-cout<<endl;
+void printS(stack<int> &s){
+if (s.empty())
+   return;
+int top=s.top();
+s.pop();
+printS(s);
+cout<<top<<" ";
+s.push(top);
 }
 
-void rootToLeaf(Node *root, vector<int> v){
+void rootToLeaf(Node *root, stack<int> &s){
 if (!root)
     return;
 
-v.push_back(root->data);
+s.push(root->data);
 if (!root->left && !root->right)
 {
-   printV(v);
-   return;
+   printS(s);
+   cout<<endl;
 }
 
-rootToLeaf(root->left, v);
-rootToLeaf(root->right, v);
+rootToLeaf(root->left, s);
+rootToLeaf(root->right, s);
+s.pop();
 }
 
 int main(){
 Node *root=NULL;
-vector<int> v;
+stack<int> s;
 root=createBST();
 cout<<"inorder traversal BST:\n";
 inorder(root);
 cout<<"\nRoot to leaf paths are:\n";
-rootToLeaf(root, v);
+rootToLeaf(root, s);
 return 0;
 }
